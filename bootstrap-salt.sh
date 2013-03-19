@@ -1697,10 +1697,6 @@ install_openbsd_5_2_git_deps() {
     /usr/local/bin/pip-2.7 install -U git+http://github.com/kmwhite/m2crypto.git#egg=m2crypto
     return 0
 }
-install_openbsd_5_2_stable() {
-    USE_SETUPTOOLS=1 /usr/local/bin/pip-2.7 install -U salt || return 1
-    return 0
-}
 install_openbsd_5_2_git() {
     __git_clone_and_checkout || return 1
     # Let's trigger config_salt() 
