@@ -1682,6 +1682,39 @@ install_freebsd_restart_daemons() {
 
 ##############################################################################
 #
+#   OpenBSD Install Functions
+#
+install_openbsd_5_2_stable_deps() {
+    /usr/sbin/pkg_add -vim swig py-pip py-jinja2 py-openssl py-crypto py-zmq py-yaml || return 1
+    /usr/local/bin/pip-2.7 install -U msgpack-python esky bbfreeze || return 1
+}
+install_openbsd_5_2_git_deps() {
+    /usr/sbin/pkg_add -vim git || return 1
+    install_openbsd_5_2_stable_deps || return 1
+    /usr/local/bin/pip-2.7 install -U git+http://github.com/kmwhite/m2crypto.git#egg=m2crypto
+    return 0
+}
+install_openbsd_5_2_stable() {
+    USE_SETUPTOOLS=1 /usr/local/bin/pip-2.7 install -U salt || return 1
+    return 0
+}
+install_openbsd_5_2_git() {
+    __git_clone_and_checkout || return 1
+    # Let's trigger config_salt() 
+    if [ "$TEMP_CONFIG_DIR" = "null" ]; then
+        TEMP_CONFIG_DIR="${SALT_GIT_CHECKOUT_DIR}/conf/"
+        CONFIG_SALT_FUNC="config_salt"
+    fi
+
+    return 0
+}
+#
+#   Ended OpenBSD Install Functions
+#
+##############################################################################
+
+##############################################################################
+#
 #   SmartOS Install Functions
 #
 install_smartos_deps() {
