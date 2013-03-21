@@ -1684,17 +1684,23 @@ install_freebsd_restart_daemons() {
 #
 #   OpenBSD Install Functions
 #
-install_openbsd_5_2_git_deps() {
-
-    /usr/sbin/pkg_add -vim git || return 1
-
-    # These could be factored out into a _stable method, but because
-    # we have to build M2Crypto from source, we're only supporting the
-    # _git install types
+_install_openbsd_deps_core() {
     /usr/sbin/pkg_add -vim swig py-pip py-jinja2 py-openssl py-crypto py-zmq py-yaml || return 1
     /usr/local/bin/pip-2.7 install -U msgpack-python esky bbfreeze || return 1
+}
+install_openbsd_5_2_stable_deps() {
+    _install_openbsd_deps_core
 
+    /usr/local/bin/pip-2.7 install -U http://dl.dropbox.com/u/174789/m2crypto-0.20.1.tar.gz
+
+    return 0
+}
+install_openbsd_5_2_git_deps() {
+    _install_openbsd_deps_core
+
+    /usr/sbin/pkg_add -vim git || return 1
     /usr/local/bin/pip-2.7 install -U git+http://github.com/kmwhite/m2crypto.git#egg=m2crypto
+
     return 0
 }
 install_openbsd_5_2_git() {
