@@ -1703,6 +1703,9 @@ install_openbsd_5_2_git_deps() {
 
     return 0
 }
+install_openbsd_5_2_stable() {
+    /usr/local/bin/pip-2.7 install -U salt
+}
 install_openbsd_5_2_git() {
     __git_clone_and_checkout || return 1
     # Let's trigger config_salt() 
