@@ -1716,7 +1716,7 @@ install_openbsd_5_2_git() {
 
     return 0
 }
-install_openbsd_5_2_git_restart_daemons() {
+install_openbsd_5_2_restart_daemons() {
     for fname in minion master syndic; do
 
         # Skip if not meant to be installed
