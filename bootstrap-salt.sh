@@ -1716,6 +1716,18 @@ install_openbsd_5_2_git() {
 
     return 0
 }
+install_openbsd_5_2_git_restart_daemons() {
+    for fname in minion master syndic; do
+
+        # Skip if not meant to be installed
+        [ $fname = "minion" ] && [ $INSTALL_MINION -eq $BS_FALSE ] && continue
+        [ $fname = "master" ] && [ $INSTALL_MASTER -eq $BS_FALSE ] && continue
+        [ $fname = "syndic" ] && [ $INSTALL_SYNDIC -eq $BS_FALSE ] && continue
+
+        /etc/rc.d/salt_${fname} stop > /dev/null 2>&1
+	/etc/rc.d/salt_${fname} start
+    done
+}
 #
 #   Ended OpenBSD Install Functions
 #
